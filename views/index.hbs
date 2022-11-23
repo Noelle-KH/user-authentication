@@ -14,5 +14,8 @@
       required
     />
   </div>
+  {{#if wrongMessage}}
+    <p class="wrong-message">{{wrongMessage}}</p>
+  {{/if}}
   <button type="submit">Sign In</button>
 </form>
