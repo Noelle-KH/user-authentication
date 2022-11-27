@@ -1,5 +1,5 @@
 # 使用者認證系統
-一個簡單版的登入系統
+一個簡單版的會員登入系統
 
 <img src="./public/images/preview.png">
 <img src="./public/images/login-preview.png">
