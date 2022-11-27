@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+const User = require('../user-model')
 const users = [
   {
     firstName: 'Tony',
@@ -26,4 +28,21 @@ const users = [
   }
 ]
 
-module.exports = users
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+mongoose.connect(process.env.MONGODB_URL)
+
+const db = mongoose.connection
+
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+
+db.once('open', () => {
+  console.log('mongodb connected!')
+  User.insertMany(users)
+  console.log('done')
+})
+
