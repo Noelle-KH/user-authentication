@@ -1,8 +1,8 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
-const User = require('./models/user-model')
 const cookieParser = require('cookie-parser')
+const routes = require('./routes')
 require('./config/mongoose')
 
 const app = express()
@@ -13,43 +13,8 @@ app.set('view engine', 'hbs')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
+app.use(routes)
 
-app.get('/', (req, res) => {
-  const id = req.cookies.userId
-  User.findById(id)
-    .lean()
-    .then(user => {
-      if (user) {
-        const firstName = user.firstName
-        res.render('login', { firstName })
-      } else {
-        res.render('index')
-      }
-    })
-})
-
-app.post('/', (req, res) => {
-  const { email, password } = req.body
-  User.findOne({ email, password })
-    .lean()
-    .then(user => {
-      if (user) {
-        const firstName = user.firstName
-        const userId = user._id.toString()
-        res.cookie('userId', userId)
-        res.render('login', { firstName })
-      } else {
-        const wrongMessage = 'Incorrect email or password'
-        res.render('index', { wrongMessage })
-      }
-    })
-    .catch(error => console.log(error))
-})
-
-app.get('/logout', (req, res) => {
-  res.clearCookie('userId')
-  res.redirect('/')
-})
 
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`)
