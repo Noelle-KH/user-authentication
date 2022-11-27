@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
         res.render('login', { firstName })
       } else {
         const wrongMessage = 'Incorrect email or password'
-        res.render('index', { wrongMessage })
+        res.render('index', { wrongMessage, email, password })
       }
     })
     .catch(error => console.log(error))
